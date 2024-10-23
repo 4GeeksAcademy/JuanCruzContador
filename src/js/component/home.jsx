@@ -1,26 +1,66 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import ReactDOM from "react-dom/client";
+import PropTypes from "prop-types";
 
 //include images into your bundle
 import rigoImage from "../../img/rigo-baby.jpg";
 
 //create your first component
-const Home = () => {
-	return (
-		<div className="text-center">
-			<h1 className="text-center mt-5">Hello Rigo!</h1>
-			<p>
-				<img src={rigoImage} />
-			</p>
-			<a href="#" className="btn btn-success">
-				If you see this green button... bootstrap is working...
-			</a>
-			<p>
-				Made by{" "}
-				<a href="http://www.4geeksacademy.com">4Geeks Academy</a>, with
-				love!
-			</p>
-		</div>
-	);
+const Home = (props) => {
+  const [contador, setContador] = useState(0);
+  const [isRunning, setIsRunning] = useState(true);
+
+  useEffect(() => {
+    if (!isRunning) return; // Si no está en funcionamiento, no hacer nada
+
+    const intervalId = setInterval(() => {
+      setContador((prevContador) => prevContador + 1);
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [isRunning]);
+
+  const revertirContador = () => {
+    setIsRunning(false); // Pausa el contador
+    setContador((prevContador) => Math.max(prevContador - 1, 0)); // Decrementa el contador, sin permitir que sea negativo
+  };
+
+  const four = Math.floor(contador / 1) % 10;
+  const three = Math.floor(contador / 10) % 10;
+  const two = Math.floor(contador / 100) % 10;
+  const one = Math.floor(contador / 1000) % 10;
+
+  return (
+    <div className="counter">
+      <div className="icon">
+        <i className="far fa-clock"></i>
+      </div>
+      <div className="one">{one}</div>
+      <div className="two">{two}</div>
+      <div className="three">{three}</div>
+      <div className="four">{four}</div>
+
+      <button className="btn btn-warning" onClick={() => setContador(0)}>
+        Reset
+      </button>
+      <button className="btn btn-info" onClick={revertirContador}>
+        Revert
+      </button>
+      <button
+        className="btn btn-danger"
+        onClick={() => setIsRunning(!isRunning)}
+      >
+        {isRunning ? "Pause" : "Resume"}
+      </button>
+    </div>
+  );
+};
+
+Home.propTypes = {
+  digitOne: PropTypes.number.isRequired,
+  digitTwo: PropTypes.number.isRequired,
+  digitThree: PropTypes.number.isRequired,
+  digitFour: PropTypes.number.isRequired,
 };
 
 export default Home;
