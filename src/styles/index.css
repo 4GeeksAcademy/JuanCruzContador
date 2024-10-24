@@ -32,7 +32,14 @@ body {
   display: flex;
   gap: 15px;
 }
+.input {
+  padding-top: 15px;
+  justify-content: space-between;
+}
 
+.input btn {
+  padding-left: 70px;
+}
 /* 
 
     You can write your own styles here...
